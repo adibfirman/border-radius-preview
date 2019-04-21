@@ -1,11 +1,9 @@
 import React from "react";
 
+import { BoxContainer } from "./components";
+
 function App() {
-  return (
-    <>
-      <div>Hello world</div>
-    </>
-  );
+  return <BoxContainer />;
 }
 
 export default App;
