@@ -3,12 +3,13 @@ import React from "react";
 import { Container, ButtonDrag } from "./styles";
 
 function BoxContainer() {
+  const [position, setPosition] = React.useState(0);
   const mouseDown = React.useRef(false);
+  const rootDom = document.querySelector("#root");
 
   React.useEffect(() => {
-    document
-      .querySelector("#root")
-      .addEventListener("mouseover", setEventRootDom);
+    rootDom.addEventListener("mousemove", onMouseMoveRootDom);
+    rootDom.addEventListener("mouseup", () => (mouseDown.current = false));
   }, []);
 
   function handleMouseDown(e) {
@@ -16,14 +17,15 @@ function BoxContainer() {
     console.log("handleMouseDown");
   }
 
-  function setEventRootDom(e) {
-    console.log(e.target, e.relatedTarget);
-    console.log("setEventRootDom");
+  function onMouseMoveRootDom(e) {
+    if (mouseDown.current) {
+      console.log(e.pageY);
+    }
   }
 
   return (
     <Container>
-      <ButtonDrag onMouseDown={handleMouseDown} />
+      <ButtonDrag position={position} onMouseDown={handleMouseDown} />
     </Container>
   );
 }
