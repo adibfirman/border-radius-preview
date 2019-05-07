@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 export const Container = styled.div`
   position: absolute;
@@ -15,10 +15,7 @@ export const ButtonDrag = styled.span`
   height: 2.5rem;
   transform: translateY(-50%);
   left: -1.4rem;
-
-  ${props => css`
-    top: ${props.position}%;
-  `}
+  top: 0%;
 
   &:before {
     content: "";
