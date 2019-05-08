@@ -3,41 +3,48 @@ import React from "react";
 import { Container, ButtonDrag } from "./styles";
 
 function BoxContainer() {
-  const mouseDown = React.useRef(false);
+  const dragActive = React.useRef(false);
   const rootDom = document.querySelector("#root");
   const btnDragRef = React.useRef();
+  const currentY = React.useRef();
   const initialY = React.useRef();
-  const disabledEvent = () => (mouseDown.current = false);
+  const yOffset = React.useRef(0);
+
+  const disabledEvent = () => (dragActive.current = false);
 
   React.useEffect(() => {
-    rootDom.addEventListener("mousemove", onMouseMoveRootDom);
-    rootDom.addEventListener("mouseup", disabledEvent);
+    rootDom.addEventListener("mousedown", startDrag);
+    rootDom.addEventListener("mousemove", onDrag);
+    rootDom.addEventListener("mouseup", endDrag);
     rootDom.addEventListener("mouseleave", disabledEvent);
   }, []);
 
-  function onMouseMoveRootDom(e) {
-    if (mouseDown.current) {
-      e.preventDefault();
+  function startDrag(e) {
+    initialY.current = e.clientY - yOffset.current;
+    if (e.target === btnDragRef.current) dragActive.current = true;
+  }
 
-      const btnDom = btnDragRef.current;
-      let topNum = e.clientY - initialY.current;
-      if (topNum <= 0) topNum = 0;
-      if (topNum >= 100) topNum = 100;
+  function onDrag(e) {
+    if (dragActive.current) {
+      let position = e.clientY - initialY.current;
+      currentY.current = position;
+      yOffset.current = position;
 
-      btnDom.style.top = `${topNum}%`;
+      if (position <= 0) position = 0;
+      if (position >= 100) position = 100;
+
+      btnDragRef.current.style.top = `${position}%`;
     }
   }
 
-  function onMouseDown(e) {
-    if (e.target === btnDragRef.current) {
-      initialY.current = e.clientY;
-      mouseDown.current = true;
-    }
+  function endDrag(e) {
+    initialY.current = currentY.current;
+    disabledEvent();
   }
 
   return (
     <Container>
-      <ButtonDrag ref={btnDragRef} onMouseDown={onMouseDown} />
+      <ButtonDrag ref={btnDragRef} />
     </Container>
   );
 }
