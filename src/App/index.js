@@ -3,12 +3,15 @@ import React from "react";
 import { Container, ButtonDrag, Box } from "./styles";
 
 function App() {
+  // --- instance variable ---
   const dragActive = React.useRef(false);
-  const rootDom = document.querySelector("#root");
-  const btnDragRef = React.useRef();
   const currentY = React.useRef();
   const initialY = React.useRef();
   const yOffset = React.useRef(0);
+
+  // --- dom reference ---
+  const rootDom = document.querySelector("#root");
+  const btnDragRef = React.useRef();
   const boxRef = React.useRef();
 
   const disabledEvent = () => (dragActive.current = false);
@@ -55,7 +58,7 @@ function App() {
   return (
     <Container>
       <Box ref={boxRef} />
-      <ButtonDrag ref={btnDragRef} />
+      <ButtonDrag leftButton ref={btnDragRef} />
     </Container>
   );
 }
