@@ -39,13 +39,11 @@ function App() {
       btnDragRef.current.style.top = `${position}px`;
 
       // ----------------- calculate the box ----------------------
-      console.log(position);
-      // const domBox = boxRef.current;
-      // const calculateTheRadius = parseInt((position / 200) * 200);
+      const domBox = boxRef.current;
+      const reduction = 200 - position;
+      const calculate = Number((reduction / 200) * 100).toFixed(2);
 
-      // console.log(calculateTheRadius);
-
-      // domBox.style.borderRadius = `0 0 0 ${calculateTheRadius}`;
+      domBox.style.borderRadius = `0 0 0 ${calculate}%`;
     }
   }
 
