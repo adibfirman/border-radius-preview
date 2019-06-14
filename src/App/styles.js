@@ -15,7 +15,7 @@ export const ButtonDrag = styled.span`
   height: 2.5rem;
   transform: translateY(-50%);
   left: -1.4rem;
-  top: 0%;
+  top: 100%;
 
   &:before {
     content: "";
@@ -29,4 +29,11 @@ export const ButtonDrag = styled.span`
     transition: 0.2s ease-out;
     border-radius: 50%;
   }
+`;
+
+export const Box = styled.div`
+  background: aqua;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 `;
