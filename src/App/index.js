@@ -4,61 +4,70 @@ import { Container, ButtonDrag, Box } from "./styles";
 
 function App() {
   // --- instance variable ---
-  const dragActive = React.useRef(false);
-  const currentY = React.useRef();
-  const initialY = React.useRef();
-  const yOffset = React.useRef(0);
+  const currentY = React.useRef(0);
+  const initialY = React.useRef(0);
+  const currentX = React.useRef(0);
+  const initialX = React.useRef(0);
 
   // --- dom reference ---
   const rootDom = document.querySelector("#root");
-  const btnDragRef = React.useRef();
   const boxRef = React.useRef();
+  const currDomBtn = React.useRef();
 
-  const disabledEvent = () => (dragActive.current = false);
+  const disabledEvent = () => (currDomBtn.current = null);
 
   React.useEffect(() => {
-    rootDom.addEventListener("mousedown", startDrag);
     rootDom.addEventListener("mousemove", onDrag);
     rootDom.addEventListener("mouseup", endDrag);
     rootDom.addEventListener("mouseleave", disabledEvent);
   }, []);
 
   function startDrag(e) {
-    initialY.current = e.clientY - yOffset.current;
-    if (e.target === btnDragRef.current) dragActive.current = true;
+    initialY.current = e.clientY - currentY.current;
+    initialX.current = e.clientX - currentX.current;
+    currDomBtn.current = e.target;
   }
 
   function onDrag(e) {
-    if (dragActive.current) {
-      let position = e.clientY - initialY.current;
-      currentY.current = position;
-      yOffset.current = position;
+    if (currDomBtn.current) {
+      const domBtn = currDomBtn.current;
+      const position = {
+        x: e.clientX - initialX.current,
+        y: e.clientY - initialY.current
+      };
 
-      position += 200;
+      currentY.current = position.y;
+      currentX.current = position.x;
 
-      if (position >= 200) position = 200;
-      if (position <= 0) position = 0;
+      let currPosition = position[domBtn.dataset.coor] + 200;
 
-      btnDragRef.current.style.top = `${position}px`;
+      if (currPosition >= 200) currPosition = 200;
+      if (currPosition <= 0) currPosition = 0;
+
+      console.log(currPosition);
+      domBtn.style[domBtn.dataset.position] = `${currPosition}px`;
 
       // ----------------- calculate the box ----------------------
-      const domBox = boxRef.current;
-      const reduction = 200 - position;
-      const calculate = Number((reduction / 200) * 100).toFixed(2);
+      // const domBox = boxRef.current;
+      // const reduction = 200 - position;
+      // const calculate = Number((reduction / 200) * 100).toFixed(2);
 
-      domBox.style.borderRadius = `0 0 0 ${calculate}%`;
+      // domBox.style.borderRadius = `0 0 0 ${calculate}%`;
     }
   }
 
   function endDrag(e) {
     initialY.current = currentY.current;
+    initialX.current = currentX.current;
     disabledEvent();
   }
 
   return (
     <Container>
       <Box ref={boxRef} />
-      <ButtonDrag leftButton ref={btnDragRef} />
+      <ButtonDrag data-position="left" data-coor="x" onMouseDown={startDrag} />
+      <ButtonDrag data-position="top" data-coor="y" onMouseDown={startDrag} bl />
+      <ButtonDrag data-position="left" data-coor="x" onMouseDown={startDrag} br />
     </Container>
   );
 }
