@@ -39,13 +39,12 @@ function App() {
       currentY.current = position.y;
       currentX.current = position.x;
 
-      let currPosition = position[domBtn.dataset.coor] + 200;
+      let currPosition = position[domBtn.dataset.coor];
 
       if (currPosition >= 200) currPosition = 200;
       if (currPosition <= 0) currPosition = 0;
 
-      console.log(currPosition);
-      domBtn.style[domBtn.dataset.position] = `${currPosition}px`;
+      domBtn.style[domBtn.dataset.moveto] = `${currPosition}px`;
 
       // ----------------- calculate the box ----------------------
       // const domBox = boxRef.current;
@@ -65,9 +64,10 @@ function App() {
   return (
     <Container>
       <Box ref={boxRef} />
-      <ButtonDrag data-position="left" data-coor="x" onMouseDown={startDrag} />
-      <ButtonDrag data-position="top" data-coor="y" onMouseDown={startDrag} bl />
-      <ButtonDrag data-position="left" data-coor="x" onMouseDown={startDrag} br />
+      <ButtonDrag data-moveto="left" data-coor="x" onMouseDown={startDrag} />
+      <ButtonDrag data-moveto="left" data-coor="x" onMouseDown={startDrag} br />
+      <ButtonDrag data-moveto="top" data-coor="y" onMouseDown={startDrag} bl />
+      <ButtonDrag data-moveto="top" data-coor="y" onMouseDown={startDrag} tr />
     </Container>
   );
 }

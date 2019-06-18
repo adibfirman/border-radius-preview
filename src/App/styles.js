@@ -17,11 +17,22 @@ export const ButtonDrag = styled.div`
   cursor: pointer;
   transform: translate(-50%, -50%);
 
-  ${({ bl }) => bl && css `top: 100%`}
-  ${({ br }) => br && css `
-    top: 100%;
-    left: 100%;
-  `}
+  ${({ tr }) =>
+    tr &&
+    css`
+      left: 100%;
+    `}
+  ${({ bl }) =>
+    bl &&
+    css`
+      top: 100%;
+    `}
+  ${({ br }) =>
+    br &&
+    css`
+      top: 100%;
+      left: 100%;
+    `}
 `;
 
 export const Box = styled.div`
