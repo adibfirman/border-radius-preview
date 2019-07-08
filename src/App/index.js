@@ -1,24 +1,26 @@
-import React from "react";
+import React, { useRef, useEffect, createRef, useState } from "react";
 
 import { Container, ButtonDrag, Box } from "./styles";
 
 function App() {
+  const [boxWidth, setBoxWidth] = useState(200);
+
   // --- instance variable ---
-  const currentY = React.useRef(0);
-  const currentX = React.useRef(0);
-  const initialY = React.useRef(0);
-  const initialX = React.useRef(0);
+  const currentY = useRef(0);
+  const currentX = useRef(0);
+  const initialY = useRef(0);
+  const initialX = useRef(0);
 
   // --- dom reference ---
   const rootDom = document.querySelector("#root");
-  const boxRef = React.useRef();
-  const currDomBtn = React.useRef();
+  const boxRef = createRef();
+  const currDomBtn = createRef();
 
   const disabledEvent = () => (currDomBtn.current = null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     rootDom.addEventListener("mousemove", onDrag);
-    rootDom.addEventListener("mouseup", endDrag);
+    rootDom.addEventListener("mouseup", disabledEvent);
     rootDom.addEventListener("mouseleave", disabledEvent);
   }, []);
 
@@ -42,8 +44,8 @@ function App() {
 
       let currPosition = position[coor];
 
-      if (negative === "true") currPosition += 200;
-      if (currPosition >= 200) currPosition = 200;
+      if (negative === "true") currPosition += boxWidth;
+      if (currPosition >= boxWidth) currPosition = boxWidth;
       if (currPosition <= 0) currPosition = 0;
 
       domBtn.style[moveto] = `${currPosition}px`;
@@ -51,54 +53,58 @@ function App() {
       // ----------------- calculate the box ----------------------
       const domBox = boxRef.current;
       let reduction = currPosition;
-      if (negative === "true") reduction = 200 - reduction;
+      if (negative === "true") reduction = boxWidth - reduction;
 
-      const calculate = Number((reduction / 200) * 100).toFixed(2);
+      const calculate = Number((reduction / boxWidth) * 100).toFixed(2);
 
       domBox.style[border] = `${calculate}%`;
     }
   }
 
-  function endDrag(e) {
-    disabledEvent();
+  function onChangeWidth(e) {
+    const val = e.target.value;
+    setBoxWidth(val || 200);
   }
 
   return (
-    <Container>
-      <Box ref={boxRef} />
-      <ButtonDrag
-        data-negative="false"
-        data-moveto="left"
-        data-coor="x"
-        onMouseDown={startDrag}
-        topLeft
-        data-border="border-top-left-radius"
-      />
-      <ButtonDrag
-        data-negative="false"
-        data-moveto="top"
-        data-coor="y"
-        onMouseDown={startDrag}
-        topRight
-        data-border="border-top-right-radius"
-      />
-      <ButtonDrag
-        data-negative="true"
-        data-moveto="left"
-        data-coor="x"
-        onMouseDown={startDrag}
-        bottomRight
-        data-border="border-bottom-right-radius"
-      />
-      <ButtonDrag
-        data-negative="true"
-        data-moveto="top"
-        data-coor="y"
-        onMouseDown={startDrag}
-        bottomLeft
-        data-border="border-bottom-left-radius"
-      />
-    </Container>
+    <React.Fragment>
+      <Container boxWidth={boxWidth}>
+        <Box ref={boxRef} />
+        <ButtonDrag
+          data-negative="false"
+          data-moveto="left"
+          data-coor="x"
+          onMouseDown={startDrag}
+          topLeft
+          data-border="border-top-left-radius"
+        />
+        <ButtonDrag
+          data-negative="false"
+          data-moveto="top"
+          data-coor="y"
+          onMouseDown={startDrag}
+          topRight
+          data-border="border-top-right-radius"
+        />
+        <ButtonDrag
+          data-negative="true"
+          data-moveto="left"
+          data-coor="x"
+          onMouseDown={startDrag}
+          bottomRight
+          data-border="border-bottom-right-radius"
+        />
+        <ButtonDrag
+          data-negative="true"
+          data-moveto="top"
+          data-coor="y"
+          onMouseDown={startDrag}
+          bottomLeft
+          data-border="border-bottom-left-radius"
+        />
+      </Container>
+      <input type="number" value={boxWidth} onChange={onChangeWidth} />
+    </React.Fragment>
   );
 }
 

@@ -2,8 +2,8 @@ import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: ${props => props.boxWidth}px;
+  height: ${props => props.boxWidth}px;
   border: 2px dashed #9e9e9e;
 `;
 
