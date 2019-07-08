@@ -17,18 +17,18 @@ export const ButtonDrag = styled.div`
   cursor: pointer;
   transform: translate(-50%, -50%);
 
-  ${({ tr }) =>
-    tr &&
+  ${({ topRight }) =>
+    topRight &&
     css`
       left: 100%;
     `}
-  ${({ bl }) =>
-    bl &&
+  ${({ bottomLeft }) =>
+    bottomLeft &&
     css`
       top: 100%;
     `}
-  ${({ br }) =>
-    br &&
+  ${({ bottomRight }) =>
+    bottomRight &&
     css`
       top: 100%;
       left: 100%;
@@ -36,8 +36,60 @@ export const ButtonDrag = styled.div`
 `;
 
 export const Box = styled.div`
-  background: aqua;
   position: absolute;
   width: 100%;
   height: 100%;
+
+  background: linear-gradient(253deg, #e0f2f1, #26a69a, #c10042, #e16f4d);
+  background-size: 800% 800%;
+
+  -webkit-animation: AnimationName 14s ease infinite;
+  -moz-animation: AnimationName 14s ease infinite;
+  -o-animation: AnimationName 14s ease infinite;
+  animation: AnimationName 14s ease infinite;
+
+  @-webkit-keyframes AnimationName {
+    0% {
+      background-position: 86% 0%;
+    }
+    50% {
+      background-position: 15% 100%;
+    }
+    100% {
+      background-position: 86% 0%;
+    }
+  }
+  @-moz-keyframes AnimationName {
+    0% {
+      background-position: 86% 0%;
+    }
+    50% {
+      background-position: 15% 100%;
+    }
+    100% {
+      background-position: 86% 0%;
+    }
+  }
+  @-o-keyframes AnimationName {
+    0% {
+      background-position: 86% 0%;
+    }
+    50% {
+      background-position: 15% 100%;
+    }
+    100% {
+      background-position: 86% 0%;
+    }
+  }
+  @keyframes AnimationName {
+    0% {
+      background-position: 86% 0%;
+    }
+    50% {
+      background-position: 15% 100%;
+    }
+    100% {
+      background-position: 86% 0%;
+    }
+  }
 `;

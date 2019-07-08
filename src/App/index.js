@@ -31,7 +31,7 @@ function App() {
   function onDrag(e) {
     if (currDomBtn.current) {
       const domBtn = currDomBtn.current;
-      const { coor, moveto, negative } = domBtn.dataset;
+      const { coor, moveto, negative, border } = domBtn.dataset;
       const position = {
         x: e.clientX - initialX.current,
         y: e.clientY - initialY.current
@@ -49,11 +49,13 @@ function App() {
       domBtn.style[moveto] = `${currPosition}px`;
 
       // ----------------- calculate the box ----------------------
-      // const domBox = boxRef.current;
-      // const reduction = 200 - position;
-      // const calculate = Number((reduction / 200) * 100).toFixed(2);
+      const domBox = boxRef.current;
+      let reduction = currPosition;
+      if (negative === "true") reduction = 200 - reduction;
 
-      // domBox.style.borderRadius = `0 0 0 ${calculate}%`;
+      const calculate = Number((reduction / 200) * 100).toFixed(2);
+
+      domBox.style[border] = `${calculate}%`;
     }
   }
 
@@ -69,27 +71,32 @@ function App() {
         data-moveto="left"
         data-coor="x"
         onMouseDown={startDrag}
+        topLeft
+        data-border="border-top-left-radius"
       />
       <ButtonDrag
         data-negative="false"
         data-moveto="top"
         data-coor="y"
         onMouseDown={startDrag}
-        tr
+        topRight
+        data-border="border-top-right-radius"
       />
       <ButtonDrag
         data-negative="true"
         data-moveto="left"
         data-coor="x"
         onMouseDown={startDrag}
-        br
+        bottomRight
+        data-border="border-bottom-right-radius"
       />
       <ButtonDrag
         data-negative="true"
         data-moveto="top"
         data-coor="y"
         onMouseDown={startDrag}
-        bl
+        bottomLeft
+        data-border="border-bottom-left-radius"
       />
     </Container>
   );
