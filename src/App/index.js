@@ -5,8 +5,8 @@ import { Container, ButtonDrag, Box } from "./styles";
 function App() {
   // --- instance variable ---
   const currentY = React.useRef(0);
-  const initialY = React.useRef(0);
   const currentX = React.useRef(0);
+  const initialY = React.useRef(0);
   const initialX = React.useRef(0);
 
   // --- dom reference ---
@@ -23,8 +23,8 @@ function App() {
   }, []);
 
   function startDrag(e) {
-    initialY.current = e.clientY - currentY.current;
-    initialX.current = e.clientX - currentX.current;
+    initialY.current = e.clientY;
+    initialX.current = e.clientX;
     currDomBtn.current = e.target;
   }
 
@@ -37,17 +37,14 @@ function App() {
         y: e.clientY - initialY.current
       };
 
-      currentY.current = position.y;
-      currentX.current = position.x;
+      currentX.current = position[coor];
+      currentY.current = position[coor];
 
       let currPosition = position[coor];
 
       if (negative === "true") currPosition += 200;
-
       if (currPosition >= 200) currPosition = 200;
-      else if (currPosition <= 0) currPosition = 0;
-
-      console.log(currPosition);
+      if (currPosition <= 0) currPosition = 0;
 
       domBtn.style[moveto] = `${currPosition}px`;
 
@@ -61,16 +58,25 @@ function App() {
   }
 
   function endDrag(e) {
-    initialY.current = currentY.current;
-    initialX.current = currentX.current;
     disabledEvent();
   }
 
   return (
     <Container>
       <Box ref={boxRef} />
-      <ButtonDrag data-moveto="left" data-coor="x" onMouseDown={startDrag} />
-      <ButtonDrag data-moveto="top" data-coor="y" onMouseDown={startDrag} tr />
+      <ButtonDrag
+        data-negative="false"
+        data-moveto="left"
+        data-coor="x"
+        onMouseDown={startDrag}
+      />
+      <ButtonDrag
+        data-negative="false"
+        data-moveto="top"
+        data-coor="y"
+        onMouseDown={startDrag}
+        tr
+      />
       <ButtonDrag
         data-negative="true"
         data-moveto="left"
