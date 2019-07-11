@@ -1,20 +1,20 @@
-import React, { useRef, useEffect, createRef, useState } from "react";
+import React, { useRef, useEffect } from "react";
 
 import { Container, ButtonDrag, Box } from "./styles";
 
 function App() {
-  const [boxWidth, setBoxWidth] = useState(200);
+  const boxWidth = 200;
 
   // --- instance variable ---
   const currentY = useRef(0);
   const currentX = useRef(0);
   const initialY = useRef(0);
   const initialX = useRef(0);
+  const currDomBtn = useRef();
 
   // --- dom reference ---
   const rootDom = document.querySelector("#root");
-  const boxRef = createRef();
-  const currDomBtn = createRef();
+  const boxRef = useRef();
 
   const disabledEvent = () => (currDomBtn.current = null);
 
@@ -25,8 +25,8 @@ function App() {
   }, []);
 
   function startDrag(e) {
-    initialY.current = e.clientY;
-    initialX.current = e.clientX;
+    initialY.current = e.clientY - currentY.current;
+    initialX.current = e.clientX - currentX.current;
     currDomBtn.current = e.target;
   }
 
@@ -59,11 +59,6 @@ function App() {
 
       domBox.style[border] = `${calculate}%`;
     }
-  }
-
-  function onChangeWidth(e) {
-    const val = e.target.value;
-    setBoxWidth(val || 200);
   }
 
   return (
@@ -103,7 +98,6 @@ function App() {
           data-border="border-bottom-left-radius"
         />
       </Container>
-      <input type="number" value={boxWidth} onChange={onChangeWidth} />
     </React.Fragment>
   );
 }
